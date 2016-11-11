@@ -1,7 +1,7 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import MyComponent from '../../../client/components/MyComponent';
+import MyComponent from '../../../client/components/MyComponent.jsx';
 
 describe('<MyComponent />', () => {
   let wrapper;

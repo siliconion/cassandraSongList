@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MyComponent from './components/MyComponent';
+import MyComponent from './components/MyComponent.jsx';
 import SampleTagListContainer from './components/SampleTagListContainer.jsx';
 
 // Import compiled SASS
