@@ -1,15 +1,12 @@
 import React from 'react';
-import SampleTagList from './SampleTagList.jsx';
+import SampleTagListContainer from './SampleTagListContainer.jsx';
 
-export default class MyComponent extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <div className="my-component">
-        <h2>{this.props.title}</h2>
-      </div>
-    );
-  }
+export default function MyComponent(props) {
+  return (
+    <div className="my-component">
+      <h2>{ props.title }</h2>
+      <h3>The major components of this boilerplate project are:</h3>
+      <SampleTagListContainer />
+    </div>
+  );
 }

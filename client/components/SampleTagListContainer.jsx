@@ -9,8 +9,8 @@ export default class SampleTagListContainer extends React.Component {
       tags: [],
     };
   }
+  // When component is added to DOM, make an AJAX request to sample endpoint
   componentDidMount() {
-    // this.setState({ tags: ['a', 'b', 'c' ]});
     axios.get('/api/tags-example')
       .then((res) => {
         this.setState({ tags: res.data });
