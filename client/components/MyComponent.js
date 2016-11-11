@@ -1,4 +1,5 @@
 import React from 'react';
+import SampleTagList from './SampleTagList.jsx';
 
 export default class MyComponent extends React.Component {
   constructor(props) {
