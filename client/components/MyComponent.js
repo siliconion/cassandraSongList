@@ -10,3 +10,7 @@ export default function MyComponent(props) {
     </div>
   );
 }
+
+MyComponent.propTypes = {
+  title: React.PropTypes.string.isRequired,
+}
