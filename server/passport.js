@@ -45,18 +45,28 @@ passport.use('local-signup', new LocalStrategy({
     console.log("LocalStrategy sign up")
       return db.findUser(username, (err, data) => {
         console.log("passport sign up database read", err, data)
-        if(data || data.rowLength > 0){
+        if(data && data.rowLength > 0){
           console.log("username already taken")
           return done('That username is already taken.', false);
         } else {
           console.log('lets sign up!');
           let hashPassword =  bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-          db.addUser(username, hashPassword, (err, data)=> {
-            console.log('db adding user!', err, data, data.rows)
+          db.addUser(username, hashPassword, (err)=> {
             if(err){
               return done(err, false)
             }
-            return done(null, data.rows[0]); 
+            db.findUser(username, (err, data) => {
+            console.log('passport sign in ', err, data);
+              if (!data || data.rowLength === 0) {
+                  //return done(null, false, { message: 'Incorrect username.' });
+                  return done('Incorrect username.', false);
+                }
+                console.log('passport sign in user pass', data.rows[0], data.rows[0].hashed_pass)
+                if (!bcrypt.compareSync(password, data.rows[0].hashed_pass)) {
+                  return done('Incorrect password.', false);
+                }
+                return done(null, data.rows[0]);
+            });
           })
         }
       })

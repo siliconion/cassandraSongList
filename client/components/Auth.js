@@ -46,8 +46,8 @@ export default class Auth extends React.Component {
     this.state.errorMessage = null;
     axios.post('/signup', {username, password})
       .then((res) => {
-        console.log("auth success! ", res.data);
-        this.props.handleLogin({ tags: res.data });
+        console.log("auth success! ", res.data.username);
+        this.props.handleLogin(res.data.username);
       })
       .catch((err) => {
         console.log("auth error: ", err);
