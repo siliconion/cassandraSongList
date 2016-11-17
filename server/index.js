@@ -15,28 +15,9 @@ const flash = require('express-flash');
 const morgan = require('morgan');
 const LocalStrategy = require('passport-local').Strategy;
 const passport = require('./passport');
-
 const db = require('./db');
-
-/*
-  *************************
-  create a .env file to hold environmental configuration
-  This file should be in the root directory of the project
-  This file expects the following variables:
-
-  CLIENT_ID=youtube_api_token
-  PORT=port_that_you_want_to_use
-  NODE_ENV=development
-  *************************
-*/
-
-const auth = process.env.CLIENT_ID;
-
 const app = express();
-
 const serverUrl = process.env.PORT || 4000;
-
-const serverMessage = `Listening on port: ${serverUrl}`;
 
 /*
   ****************
@@ -92,42 +73,38 @@ app.get('/', (req, res) => {
   ***********************************************************************
 */
 
-app.post('/login',  
-  passport.authenticate('local', {
-      successRedirect: '/loginSuccess',
-      failureRedirect: '/loginFail'
-}));
+app.post('/login', function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+        if (err) {
+            return next(err); // Error 500
+        }
+        if (!user) {
+            //Authentication failed
+            return res.status(401).send(info); 
+        }
+        //Authentication successful
+        res.status(200).send(user);
+    })(req, res, next);
+}); 
 
 app.get('/logout', function (req, res) {
     req.logout();
     res.send('logout success');
 });
 
-app.post('/signup', 
-  passport.authenticate('local-signup', {
-      successRedirect: '/loginSuccess',
-      failureRedirect: '/loginFail'
-}));
-
-app.get('/loginSuccess', isLoggedIn, function(req, res){
-    var result = {
-      errorMessage:"", //error message
-      username:req.user.username,
-      isSuccessful: true
-    }
-    res.send(result);
-  }
-);
-
-app.get('/loginFail', function(req, res){ // should not get here
-    var result = {
-      errorMessage:"",
-      username:"",
-      isSuccessful: false
-    }
-    res.send(result);
-  }
-);
+app.post('/signup', function(req, res, next) {
+    passport.authenticate('local-signup', function(err, user, info) {
+        if (err) {
+            return next(err); // Error 500
+        }
+        if (!user) {
+            //Authentication failed
+            return res.status(401).send(info); 
+        }
+        //Authentication successful
+        res.status(200).send(user);
+    })(req, res, next);
+}); 
 
 app.get('/testPage', isLoggedIn, function(req, res){
   console.log("print out user info", req.user)
@@ -148,4 +125,4 @@ function isLoggedIn(req, res, next) {
 */
 
 app.listen(serverUrl);
-console.log(serverMessage);
+console.log(`Listening on port: ${serverUrl}`);

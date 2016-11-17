@@ -31,12 +31,12 @@ export default class Auth extends React.Component {
     this.state.errorMessage = null;
     axios.post('/login', {username, password})
       .then((res) => {
-        console.log("auth success! ", res.data.username);
+        console.log("auth success! ", res.data);
         this.props.handleLogin(res.data.username);
       })
       .catch((err) => {
-        console.log("auth error: ", err);
-        this.setState({errorMessage: err});
+        console.log("auth error: ", err.response.data);
+        this.setState({errorMessage: err.response.data});
     });
   }
 
@@ -51,7 +51,7 @@ export default class Auth extends React.Component {
       })
       .catch((err) => {
         console.log("auth error: ", err);
-        this.setState({errorMessage: err});
+        this.setState({errorMessage: err.response.data});
     });
   }
 
@@ -90,7 +90,6 @@ export default class Auth extends React.Component {
             <button type="button" className="btn btn-primary col-xs-12 col-sm-6" onClick={this.handleLogin} >Log in</button>
           </div>
         </form>
-        <p className="errorMessage"> { this.state.errorMessage ? this.state.errorMessage : null } </p>
       </div>
     );
   }
