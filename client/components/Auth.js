@@ -25,11 +25,17 @@ export default class Auth extends React.Component {
     this.setState({password: event.target.value});
   }
 
+  handleSubmit() {
+    let user = this.state.username;
+    let pass = this.state.password;
+    this.checkLoginCredentials({'username': user, 'password': pass});
+  }
+
   handleLogin() {
     let username = this.state.username;
     let password = this.state.password;
     this.state.errorMessage = null;
-    axios.post('/api/login')
+    axios.post('/login', {username, password})
       .then((res) => {
         console.log("auth success! ", res);
         this.props.login({ tags: res.data });
@@ -44,9 +50,9 @@ export default class Auth extends React.Component {
     let username = this.state.username;
     let password = this.state.password;
     this.state.errorMessage = null;
-    axios.post('/api/signup')
+    axios.post('/signup', {username, password})
       .then((res) => {
-        console.log("auth success! ", res);
+        console.log("auth success! ", res.data);
         this.props.login({ tags: res.data });
       })
       .catch((err) => {

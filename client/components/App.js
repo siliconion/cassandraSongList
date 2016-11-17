@@ -14,7 +14,7 @@ export default class App extends React.Component {
     return (
       <div className="app container">
         <h3>Welcome To Song List</h3>
-        {!this.state.user?(<Main></Main>):(<Auth></Auth>)}
+        {this.state.user?(<Main></Main>):(<Auth></Auth>)}
       </div>
     )
   };

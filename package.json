@@ -39,7 +39,6 @@
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "react": "^15.1.0",
-    "react-bootstrap": "^0.30.6",
     "react-dom": "^15.1.0",
     "scssify": "^2.1.0",
     "supertest-as-promised": "^3.1.0"

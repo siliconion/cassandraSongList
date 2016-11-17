@@ -1,7 +1,13 @@
+/*
+  *************************
+  Include required packages
+  *************************
+*/
+
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-// const babelify = require('babelify');
+const babelify = require('babelify');
 const browserify = require('browserify-middleware');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
@@ -9,55 +15,137 @@ const flash = require('express-flash');
 const morgan = require('morgan');
 const LocalStrategy = require('passport-local').Strategy;
 const passport = require('./passport');
+
 const db = require('./db');
-const routes = express.Router()
+
+/*
+  *************************
+  create a .env file to hold environmental configuration
+  This file should be in the root directory of the project
+  This file expects the following variables:
+
+  CLIENT_ID=youtube_api_token
+  PORT=port_that_you_want_to_use
+  NODE_ENV=development
+  *************************
+*/
+
 const auth = process.env.CLIENT_ID;
+
 const app = express();
-const serverUrl = process.env.PORT || 8000;
+
+const serverUrl = process.env.PORT || 4000;
+
 const serverMessage = `Listening on port: ${serverUrl}`;
 
-if (process.env.NODE_ENV !== 'test') {
+/*
+  ****************
+  Middleware calls
+  ****************
+*/
+app.use(morgan('dev'));   // show requests in console
+app.use(bodyParser.json());
+app.use(cookieParser());
+// initialize passport
+app.use(session({secret: 'kitty kity', cookie: {}}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash())
+app.use(express.static(path.join(__dirname, '../client')));
+app.use(express.static(path.join(__dirname, '../assets')));
 
-  var assetFolder = path.resolve(__dirname, '../client/public')
-  routes.use(express.static(assetFolder))
-  app.use(morgan('dev'));   // show requests in console
-  app.use(bodyParser.json());
-  app.use(cookieParser());
-  // initialize passport
-  app.use(session({secret: 'secret', cookie: {}}));
-  app.use(passport.initialize());
-  app.use(passport.session());
-  app.use(flash())
-  // app.use(express.static(path.join(__dirname, '../client')));
-  // app.use(express.static(path.join(__dirname, '../assets')));
+/*
+  *******************
+  ROUTING STARTS HERE
+  *******************
+*/
 
-  //
-  // Provide a browserified file at a specified path
-  //
-  routes.get('/app-bundle.js',
-    browserify('./client/app.js', {
-      // Bundles all client-side es6, JSX, and CSS/SCSS/SASS
-      transform: ['babelify', 'scssify'],
-    })
-  )
-  //
-  // Static assets (html, etc.)
-  //
-  app.use('/', routes)
-  //
-  // The Catch-all Route
-  // This is for supporting browser history pushstate.
-  // NOTE: Make sure this route is always LAST.
-  //
-  routes.get('/*', function(req, res){
-    res.sendFile( assetFolder + '/index.html' )
+/*
+  *******************************************
+  Browserify and Babelify all files for React
+  *******************************************
+*/
+
+app.get('/app-bundle.js',
+  browserify(path.join(__dirname, '../client/app.js'), {
+    transform: [[babelify, { presets: ['es2015', 'react'] }]],
   })
-  // Start the server!
-  var port = process.env.PORT || 4000
-  app.listen(port)
-  console.log("Listening on port", port)
+);
+
+/*
+  ***********************************************************************
+  Initializes interface.
+
+  Response object:  Index.html file
+  ***********************************************************************
+*/
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/public/Index.html'));
+});
+
+/*
+  ***********************************************************************
+  Auth through passport
+
+  Response object:  user onject if success, 500 with error string if fail
+  ***********************************************************************
+*/
+
+app.post('/login',  
+  passport.authenticate('local', {
+      successRedirect: '/loginSuccess',
+      failureRedirect: '/loginFail'
+}));
+
+app.get('/logout', function (req, res) {
+    req.logout();
+    res.send('logout success');
+});
+
+app.post('/signup', 
+  passport.authenticate('local-signup', {
+      successRedirect: '/loginSuccess',
+      failureRedirect: '/loginFail'
+}));
+
+app.get('/loginSuccess', isLoggedIn, function(req, res){
+    var result = {
+      errorMessage:"", //error message
+      username:req.user.username,
+      isSuccessful: true
+    }
+    res.send(result);
+  }
+);
+
+app.get('/loginFail', function(req, res){ // should not get here
+    var result = {
+      errorMessage:"",
+      username:"",
+      isSuccessful: false
+    }
+    res.send(result);
+  }
+);
+
+app.get('/testPage', isLoggedIn, function(req, res){
+  console.log("print out user info", req.user)
+  res.send('You are allow')
+});
+
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()){
+      return next();
+    }
+    res.send("you shall not pass")
 }
-else {
-  // We're in test mode; make this file importable instead.
-  module.exports = routes
-}
+
+/*
+  *******************************************************************
+  Spin up server on either NODE environmental variable or 8000(local)
+  *******************************************************************
+*/
+
+app.listen(serverUrl);
+console.log(serverMessage);

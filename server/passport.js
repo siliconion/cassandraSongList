@@ -1,7 +1,8 @@
 const LocalStrategy   = require('passport-local').Strategy;
 const db = require('./db');
 const bcrypt   = require('bcrypt-nodejs');
-let passport = require('passport');
+
+var passport = require('passport');
 
 /*
   ***********************************************************************
@@ -12,16 +13,18 @@ let passport = require('passport');
 */
 passport.use(new LocalStrategy(
   function(username, password, done) {
-  db.findUser(username)
-    .then(user =>{
-      if (!user) {
-        //return done(null, false, { message: 'Incorrect username.' });
-        return done('Incorrect username.', false);
-      }
-      if (!bcrypt.compareSync(password, user.password)) {
-        return done('Incorrect password.', false);
-      }
-      return done(null, user);
+    console.log("LocalStrategy sign in")
+    db.findUser(username, (err, data) => {
+      console.log('passport sign in ', err, data);
+      if (!data || data.rowLength === 0) {
+          //return done(null, false, { message: 'Incorrect username.' });
+          return done('Incorrect username.', false);
+        }
+        console.log('passport sign in user pass', data.rows[0], data.rows[0].hashed_pass)
+        if (!bcrypt.compareSync(password, data.rows[0].hashed_pass)) {
+          return done('Incorrect password.', false);
+        }
+        return done(null, data.rows[0]);
     });
   }
 ));
@@ -38,16 +41,23 @@ passport.use('local-signup', new LocalStrategy({
     },
   function(req, username, password, done) {
     process.nextTick(function() {
-      return db.findUser(username)
-      .then((user) => {
-        if(user){
+
+    console.log("LocalStrategy sign up")
+      return db.findUser(username, (err, data) => {
+        console.log("passport sign up database read", err, data)
+        if(data || data.rowLength > 0){
+          console.log("username already taken")
           return done('That username is already taken.', false);
         } else {
-          var hashPassword =  bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-          db.addUser(username, hashPassword)
-          .then((user)=>{
-            return done(null, user[0]); 
-          });
+          console.log('lets sign up!');
+          let hashPassword =  bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+          db.addUser(username, hashPassword, (err, data)=> {
+            console.log('db adding user!', err, data, data.rows)
+            if(err){
+              return done(err, false)
+            }
+            return done(null, data.rows[0]); 
+          })
         }
       })
     })
@@ -68,9 +78,8 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function(user, done) {
   console.log("DESERIALIZE", JSON.stringify(user));
-    db.findUser(user)
-    .then((user,err)=>{
-        done(err, user);
+    db.findUser(user, (err, data) => {
+      done(err, data.rows[0]);
     });
     //done(user);
 });

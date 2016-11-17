@@ -16,7 +16,7 @@ export default class SongList extends React.Component {
     axios.get('/api/songList')
       .then((res) => {
         console.log("auth success! ", res);
-        this.setState(songs:res);
+        this.setState(songs: res);
       })
       .catch((err) => {
         console.log("auth error: ", err);
