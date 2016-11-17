@@ -6,15 +6,27 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null,
+      username: null,
     };
-    this.channelInfo = [];
+    this.handleLogin = this.handleLogin.bind(this);
+  }
+
+  handleLogin(username){
+    this.setState({
+      username
+    })
   }
   render() {
     return (
       <div className="app container">
-        <h3>Welcome To Song List</h3>
-        {this.state.user?(<Main></Main>):(<Auth></Auth>)}
+        <h3>Welcome To Song List, {this.state.username} !</h3>
+        {this.state.username?
+          (
+            <Main ></Main>
+          ):(
+            <Auth handleLogin={this.handleLogin}></Auth>
+          )
+        }
       </div>
     )
   };
