@@ -6,26 +6,30 @@ export default class Auth extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
-      password: '',
-      responseMessage: null,
-      errorMessage: null
+      songList: []
     };
 
-    // this.handleUsernameChange= this.handleUsernameChange.bind(this);
+    this.updateSongList= this.updateSongList.bind(this);
   }
 
+  updateSongList(songList){
+    console.log("main update songlist", songList)
+    this.setState({songList})
+  }
+
+  componentDidMount() {
+    console.log("main componentDidMount")
+  }
 
   render() {
     return (
       <div>
-        Main page!
         <div className="row">
-          <div className="col-xs-12 col-sm-6">
-           <SongList />
+          <div className="col-xs-12 col-sm-9">
+            <SongList updateSongList={this.updateSongList} songList={this.state.songList} />
           </div>
-          <div className="col-xs-12 col-sm-6">
-            <SongForm />
+          <div className="col-xs-12 col-sm-3">
+            <SongForm updateSongList={this.updateSongList}/>
           </div>
         </div>
       </div>

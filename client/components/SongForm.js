@@ -35,10 +35,17 @@ export default class SongForm extends React.Component {
     let song = this.state.song;
     let track = this.state.track;
     this.state.errorMessage = null;
-    axios.post('/songList', {artist, album, song, track})
+    axios.post('/songList', {
+        songInfo:{artist, album, song, track}
+      })
       .then((res) => {
-        console.log("auth success! ", res.data.songList);
-        this.props.handleLogin(res.data.songList);
+        this.setState({
+          artist: "",
+          album:"",
+          song:"",
+          track:""
+        })        
+        this.props.updateSongList(res.data);
       })
       .catch((err) => {
         console.log("auth error: ", err);
@@ -48,19 +55,40 @@ export default class SongForm extends React.Component {
   render() {
     return (
       <div>
-        Add A Song
         <form>
           <div className="form-group">
-            <input type="text" className="form-control" onChange={this.handleArtistChange} placeholder="Artist" />
+            Add A Song
           </div>
           <div className="form-group">
-            <input type="text" className="form-control" onChange={this.handleAlbumChange} placeholder="Album" />
+            <input 
+              type="text" 
+              className="form-control" 
+              value={this.state.artist} 
+              onChange={this.handleArtistChange} 
+              placeholder="Artist" />
           </div>
           <div className="form-group">
-            <input type="text" className="form-control" onChange={this.handleSongChange} placeholder="Song Title" />
+            <input 
+              type="text" 
+              className="form-control" 
+              value={this.state.album} 
+              onChange={this.handleAlbumChange} 
+              placeholder="Album" />
           </div>
           <div className="form-group">
-            <input type="text" className="form-control" onChange={this.handleTrackChange} placeholder="Track" />
+            <input type="text" 
+              value={this.state.song} 
+              className="form-control" 
+              onChange={this.handleSongChange} 
+              placeholder="Song Title" />
+          </div>
+          <div className="form-group">
+            <input 
+              type="number" 
+              value={this.state.track} 
+              className="form-control" 
+              onChange={this.handleTrackChange} 
+              placeholder="Track" />
           </div>
           <button type="button" className="btn btn-primary" onClick={this.addSong}>Add Song</button>
         </form>

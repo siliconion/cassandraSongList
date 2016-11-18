@@ -20,20 +20,24 @@ module.exports = (function(){
     client.execute(query, [username], { prepare: true }, callback);
   }
   db.addUser = (username, hashPassword, callback) => {
+    const data = [username, Date.now() ,hashPassword ];
     const query = 'INSERT INTO auth_table (username ,date_joined ,hashed_pass) VALUES (?, ?, ?)';
-    client.execute(query, [username, Date.now() ,hashPassword ], { prepare: true }, callback);
+    client.execute(query, data, { prepare: true }, callback);
   }
   db.getSongList = (username, callback) => {
     const query = 'SELECT * FROM songs WHERE username = ?';
     client.execute(query, [username], { prepare: true }, callback);
   }
   db.addSong = (username, songInfo, callback) => {
+    console.log("db add song", username, songInfo);
     const query = 'INSERT INTO songs (username, artist_name, album, song_name, track) VALUES (?, ?, ?, ?, ?)';
-    client.execute(query, [username], { prepare: true }, callback);
+    const data = [username, songInfo.artist, songInfo.album, songInfo.song, songInfo.track];
+    client.execute(query, data, { prepare: true }, callback);
   }
   db.removeSong = (username, songInfo, callback) => {
-    const query = 'DELETE FROM WHER username=? AND artist_name=? AND album=? AND song_name=?';
-    client.execute(query, [username, songInfo.artist_name, songInfo.album, songInfo.song_name], { prepare: true }, callback);
+    const query = 'DELETE FROM WHER username=? AND artist_name=? AND album=? AND song_name=? AND track=?';
+    const data = [username, songInfo.artist, songInfo.album, songInfo.song, songInfo.track];
+    client.execute(query, data, { prepare: true }, callback);
   }
   return db;
 })();

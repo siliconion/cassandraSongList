@@ -107,30 +107,37 @@ app.post('/signup', function(req, res, next) {
 app.get('/songlist', isLoggedIn, function(req, res){
   console.log("get song list", req.user)
   db.getSongList(req.user.username, (err, data) => {
-    console.log(data);
     res.send(data.rows);
   })
 });
 
 app.post('/songlist', isLoggedIn, function(req, res){
-  console.log("post to song list", req.user)
-  db.addSong(req.user.username, req.songInfo, (err) => {
-    if(err){res.status(500).send()}
-    db.getSongList(req.user, (err, data) => {
-      console.log(data);
-      res.send(data.rows);
-    })
+  console.log("post to song list", req.user.username, req.body)
+  db.addSong(req.user.username, req.body.songInfo, (err) => {
+    if(err){
+      console.log("post song db error", err)
+      res.status(500).send()
+    } else {
+      db.getSongList(req.user.username, (err, data) => {
+        console.log(data);
+        res.send(data.rows);
+      })
+    }
   })
 });
 
 app.delete('/songlist', isLoggedIn, function(req, res){
-  console.log("delete to song list", req.user.usernames)
+  console.log("delete to song list", req.user.username, req.data)
   db.removeSong(req.user.username, req.songInfo,(err) => {
-    if(err){res.status(500).send()}
-    db.getSongList(req.user, (err, data) => {
-      console.log(data);
-      res.send(data.rows);
-    })
+    if(err){
+      console.log("delete db error", err)
+      res.status(500).send()
+    } else {
+      db.getSongList(req.user, (err, data) => {
+        console.log(data);
+        res.send(data.rows);
+      })
+    }
   })
 });
 

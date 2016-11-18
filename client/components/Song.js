@@ -3,21 +3,23 @@ import React from 'react';
 export default class Song extends React.Component {
   constructor(props) {
     super(props);
-    this.showSongs= this.showSongs.bind(this);
+    this.deleteSong= this.deleteSong.bind(this);
   }
 
-  showSongs() {
-    return this.state.songs.map(s => <Song songinfo={s} />)
+  deleteSong(){
+    console.log("delete song")
   }
 
   render() {
+    console.log(this.props)
     return (
-      <div className="row">
-        <div className="col-xs-2 col-sm-2">{this.props.songinfo.artist_name}</div>
-        <div className="col-xs-3 col-sm-3">{this.props.songinfo.album}</div>
-        <div className="col-xs-6 col-sm-6">{this.props.songinfo.song_name}</div>
-        <div className="col-xs-1 col-sm-1">{this.props.songinfo.track}</div>
-      </div>
+      <tr className="">
+        <td className="">{this.props.songInfo.artist_name}</td>
+        <td className="">{this.props.songInfo.album}</td>
+        <td className="">{this.props.songInfo.song_name}</td>
+        <td className="">{this.props.songInfo.track}</td>
+        <td className="" onClick={this.props.deleteSong}> X </td>
+      </tr>
     );
   }
 }
