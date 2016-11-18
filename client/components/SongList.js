@@ -28,8 +28,13 @@ export default class SongList extends React.Component {
   }
 
   showSongs() {
-    return this.state.songList.sort((a,b)=>a.artist_name.localeCompare(b.artist_name))
-      .map(s => <Song updateSongList={this.props.updateSongList} songInfo={s} />)
+    return this.state.songList.sort((a,b)=>{
+      const artist = a.artist_name.localeCompare(b.artist_name);
+      if(artist!==0) return artist*-1;
+      const album = a.album.localeCompare(b.album);
+      if(album!==0) return album*-1;
+      return a.song_name.localeCompare(b.song_name);
+    }).map(s => <Song updateSongList={this.props.updateSongList} songInfo={s} />)
   }
 
   render() {
