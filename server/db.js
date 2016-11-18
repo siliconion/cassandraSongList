@@ -34,7 +34,7 @@ module.exports = (function(){
     const data = [username, songInfo.artist_name, songInfo.album, songInfo.song_name, songInfo.track];
     client.execute(query, data, { prepare: true }, callback);
   }
-  db.devareSong = (username, songInfo, callback) => {
+  db.deleteSong = (username, songInfo, callback) => {
     console.log("db delete song", username, songInfo)
     const query = 'DELETE FROM songs WHERE username=? AND artist_name=? AND album=? AND song_name=?';
     const data = [username, songInfo.artist_name, songInfo.album, songInfo.song_name];
