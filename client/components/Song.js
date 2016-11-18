@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 export default class Song extends React.Component {
   constructor(props) {
@@ -6,8 +7,17 @@ export default class Song extends React.Component {
     this.deleteSong= this.deleteSong.bind(this);
   }
 
-  deleteSong(){
+  deleteSong() {
     console.log("delete song")
+    axios.post('/deleteSong', {
+        songInfo:this.props.songInfo
+      })
+      .then((res) => {
+        this.props.updateSongList(res.data);
+      })
+      .catch((err) => {
+        console.log("auth error: ", err);
+    });
   }
 
   render() {
@@ -18,14 +28,8 @@ export default class Song extends React.Component {
         <td className="">{this.props.songInfo.album}</td>
         <td className="">{this.props.songInfo.song_name}</td>
         <td className="">{this.props.songInfo.track}</td>
-        <td className="" onClick={this.props.deleteSong}> X </td>
+        <td className="" onClick={this.deleteSong}><i className="fa fa-trash" aria-hidden="true"></i></td>
       </tr>
     );
   }
 }
-
-
-// SampleTagList.propTypes = {
-//   tags: React.PropTypes.array.isRequired,
-// };
-

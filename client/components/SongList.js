@@ -24,14 +24,10 @@ export default class SongList extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("componentWillReceiveProps songlist", nextProps, nextProps.songList);
     this.setState({songList:nextProps.songList});
   }
 
   showSongs() {
-    console.log("show songs", this.state.songList);
-    let sorted = this.state.songList.sort((a,b)=>a.artist_name.localeCompare(b.artist_name));
-    console.log("sorted list", sorted, sorted.map(a=>a.artist_name));
     return this.state.songList.sort((a,b)=>a.artist_name.localeCompare(b.artist_name))
       .map(s => <Song updateSongList={this.props.updateSongList} songInfo={s} />)
   }
@@ -46,7 +42,7 @@ export default class SongList extends React.Component {
               <th className="">Album</th>
               <th className="">Title</th>
               <th className="">Track</th>
-              <th className=""> X </th>
+              <th className=""><i className="fa fa-trash" aria-hidden="true"></i></th>
             </tr>
           </thead>
           <tbody>

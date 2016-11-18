@@ -30,13 +30,13 @@ export default class SongForm extends React.Component {
     this.setState({track: event.target.value});
   }
   addSong() {
-    let artist = this.state.artist;
+    let artist_name = this.state.artist;
     let album = this.state.album;
-    let song = this.state.song;
+    let song_name = this.state.song;
     let track = this.state.track;
     this.state.errorMessage = null;
     axios.post('/songList', {
-        songInfo:{artist, album, song, track}
+        songInfo:{artist_name, album, song_name, track}
       })
       .then((res) => {
         this.setState({
@@ -96,8 +96,3 @@ export default class SongForm extends React.Component {
     );
   }
 }
-
-
-// SampleTagList.propTypes = {
-//   tags: React.PropTypes.array.isRequired,
-// };

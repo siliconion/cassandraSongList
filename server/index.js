@@ -126,14 +126,14 @@ app.post('/songlist', isLoggedIn, function(req, res){
   })
 });
 
-app.delete('/songlist', isLoggedIn, function(req, res){
-  console.log("delete to song list", req.user.username, req.data)
-  db.removeSong(req.user.username, req.songInfo,(err) => {
+app.post('/deleteSong', isLoggedIn, function(req, res){
+  console.log("delete to song list", req.user.username, req.body)
+  db.deleteSong(req.user.username, req.body.songInfo, (err) => {
     if(err){
       console.log("delete db error", err)
       res.status(500).send()
     } else {
-      db.getSongList(req.user, (err, data) => {
+      db.getSongList(req.user.username, (err, data) => {
         console.log(data);
         res.send(data.rows);
       })
