@@ -54,7 +54,7 @@ app.get('/app-bundle.js',
 */
 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/public/Index.html'));
+  res.sendFile(path.join(__dirname, '../client/public/index.html'));
 });
 
 /*
