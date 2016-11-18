@@ -105,17 +105,14 @@ app.post('/signup', function(req, res, next) {
 }); 
 
 app.get('/songlist', isLoggedIn, function(req, res){
-  console.log("get song list", req.user)
   db.getSongList(req.user.username, (err, data) => {
     res.send(data.rows);
   })
 });
 
 app.post('/songlist', isLoggedIn, function(req, res){
-  console.log("post to song list", req.user.username, req.body)
   db.addSong(req.user.username, req.body.songInfo, (err) => {
     if(err){
-      console.log("post song db error", err)
       res.status(500).send()
     } else {
       db.getSongList(req.user.username, (err, data) => {
@@ -127,10 +124,8 @@ app.post('/songlist', isLoggedIn, function(req, res){
 });
 
 app.post('/deleteSong', isLoggedIn, function(req, res){
-  console.log("delete to song list", req.user.username, req.body)
   db.deleteSong(req.user.username, req.body.songInfo, (err) => {
     if(err){
-      console.log("delete db error", err)
       res.status(500).send()
     } else {
       db.getSongList(req.user.username, (err, data) => {
