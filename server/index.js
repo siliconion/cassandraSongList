@@ -1,9 +1,3 @@
-/*
-  *************************
-  Include required packages
-  *************************
-*/
-
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -11,7 +5,6 @@ const babelify = require('babelify');
 const browserify = require('browserify-middleware');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
-const flash = require('express-flash');
 const morgan = require('morgan');
 const LocalStrategy = require('passport-local').Strategy;
 const passport = require('./passport');
@@ -25,13 +18,12 @@ const serverUrl = process.env.PORT || 4000;
   ****************
 */
 app.use(morgan('dev'));   // show requests in console
-app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(bodyParser.json());
 // initialize passport
 app.use(session({secret: 'kitty kity', cookie: {}}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash())
 app.use(express.static(path.join(__dirname, '../client')));
 app.use(express.static(path.join(__dirname, '../assets')));
 
@@ -83,7 +75,10 @@ app.post('/login', function(req, res, next) {
             return res.status(401).send(info); 
         }
         //Authentication successful
-        res.status(200).send(user);
+        req.logIn(user, function(err) {
+          if (err) { return next(err); }
+          return res.status(200).send(user);
+        });
     })(req, res, next);
 }); 
 
@@ -102,20 +97,48 @@ app.post('/signup', function(req, res, next) {
             return res.status(401).send(info); 
         }
         //Authentication successful
-        res.status(200).send(user);
+        req.logIn(user, function(err) {
+          if (err) { return next(err); }
+          return res.status(200).send(user);
+        });
     })(req, res, next);
 }); 
 
-app.get('/testPage', isLoggedIn, function(req, res){
-  console.log("print out user info", req.user)
-  res.send('You are allow')
+app.get('/songlist', isLoggedIn, function(req, res){
+  console.log("get song list", req.user)
+  db.getSongList(req.user.username, (err, data) => {
+    console.log(data);
+    res.send(data.rows);
+  })
+});
+
+app.post('/songlist', isLoggedIn, function(req, res){
+  console.log("post to song list", req.user)
+  db.addSong(req.user.username, req.songInfo, (err) => {
+    if(err){res.status(500).send()}
+    db.getSongList(req.user, (err, data) => {
+      console.log(data);
+      res.send(data.rows);
+    })
+  })
+});
+
+app.delete('/songlist', isLoggedIn, function(req, res){
+  console.log("delete to song list", req.user.usernames)
+  db.removeSong(req.user.username, req.songInfo,(err) => {
+    if(err){res.status(500).send()}
+    db.getSongList(req.user, (err, data) => {
+      console.log(data);
+      res.send(data.rows);
+    })
+  })
 });
 
 function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()){
-      return next();
-    }
-    res.send("you shall not pass")
+  if (req.isAuthenticated()){
+    return next();
+  }
+  res.status(401).send("you shall not pass");
 }
 
 /*

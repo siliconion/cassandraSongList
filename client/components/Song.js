@@ -13,7 +13,10 @@ export default class Song extends React.Component {
   render() {
     return (
       <div className="row">
-        {this.props.songinfo.name}
+        <div className="col-xs-2 col-sm-2">{this.props.songinfo.artist_name}</div>
+        <div className="col-xs-3 col-sm-3">{this.props.songinfo.album}</div>
+        <div className="col-xs-6 col-sm-6">{this.props.songinfo.song_name}</div>
+        <div className="col-xs-1 col-sm-1">{this.props.songinfo.track}</div>
       </div>
     );
   }

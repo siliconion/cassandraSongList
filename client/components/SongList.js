@@ -13,7 +13,7 @@ export default class SongList extends React.Component {
   }
 
   componentDidMount() {
-    axios.get('/api/songList')
+    axios.get('/songList')
       .then((res) => {
         console.log("auth success! ", res);
         this.setState(songs: res);

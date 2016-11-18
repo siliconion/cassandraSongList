@@ -94,7 +94,3 @@ export default class Auth extends React.Component {
     );
   }
 }
-
-// SampleTagList.propTypes = {
-//   tags: React.PropTypes.array.isRequired,
-// };
