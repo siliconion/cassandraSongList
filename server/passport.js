@@ -19,7 +19,6 @@ var authenticate = function(username, password, done) {
 
 var signup = function(username, password, done){
   db.findUser(username, (err, data) => {
-    console.log("passport sign up database read", err, data)
     if(data && data.rowLength > 0){
       return done(null, false, "This username is already taken");
     } else {
@@ -39,12 +38,10 @@ passport.use(new LocalStrategy(authenticate));
 passport.use('local-signup', new LocalStrategy(signup));
 
 passport.serializeUser(function (user, done) {
-  // console.log("serialize", user);
     done(null, user.username);
 });
 
 passport.deserializeUser(function(user, done) {
-  // console.log("DESERIALIZE", JSON.stringify(user));
     db.findUser(user, (err, data) => {
       done(err, data.rows[0]);
     });

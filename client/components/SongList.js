@@ -12,10 +12,8 @@ export default class SongList extends React.Component {
   }
 
   componentDidMount() {
-    console.log("songlist componentDidMount")
     axios.get('/songList')
       .then((res) => {
-        console.log("songlist get success! ", res.data);
         this.props.updateSongList(res.data);
       })
       .catch((err) => {

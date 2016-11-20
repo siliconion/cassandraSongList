@@ -112,7 +112,6 @@ app.get('/songlist', isLoggedIn, function(req, res){
 
 app.post('/songlist', isLoggedIn, function(req, res){
   db.addSong(req.user.username, req.body.songInfo, (err, data) => {
-    console.log("db add song callback", data, "x");
     if(err){
       res.status(500).send();
     } else {
@@ -125,7 +124,6 @@ app.post('/songlist', isLoggedIn, function(req, res){
 
 app.post('/deleteSong', isLoggedIn, function(req, res){
   db.deleteSong(req.user.username, req.body.songInfo, (err, data) => {
-    console.log("db delete song callback", data);
     if(err){
       res.status(500).send();
     } else {

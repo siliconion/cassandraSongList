@@ -16,7 +16,6 @@ export default class Auth extends React.Component {
   }
 
   updateSongList(songList){
-    console.log("main update songlist", songList)
     this.setState({songList})
   }
 
@@ -49,9 +48,6 @@ export default class Auth extends React.Component {
       .catch((err) => {
         console.log("auth error: ", err);
     });
-  }
-  componentDidMount() {
-    console.log("main componentDidMount")
   }
 
   render() {

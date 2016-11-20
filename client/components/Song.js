@@ -8,7 +8,6 @@ export default class Song extends React.Component {
   }
 
   deleteSong() {
-    console.log("delete song");
     this.props.deleteSong(this.props.songInfo);
   }
 

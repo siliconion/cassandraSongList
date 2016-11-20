@@ -19,7 +19,8 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="app container">
-        <h3>Welcome To Song List, {this.state.username} !</h3>
+        <h3>Welcome To Song List{this.state.username?(", "+this.state.username):null } !</h3>
+        <br/>
         {this.state.username?
           (
             <Main ></Main>
