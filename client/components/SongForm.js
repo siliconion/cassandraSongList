@@ -8,7 +8,8 @@ export default class SongForm extends React.Component {
       artist: "",
       album:"",
       song:"",
-      track:""
+      track:"",
+      errorMessage:null
     };
 
     this.handleArtistChange= this.handleArtistChange.bind(this);
@@ -29,27 +30,42 @@ export default class SongForm extends React.Component {
   handleTrackChange(event) {
     this.setState({track: event.target.value});
   }
-  addSong() {
+
+  addSong(){
     let artist_name = this.state.artist;
     let album = this.state.album;
     let song_name = this.state.song;
     let track = this.state.track;
     this.state.errorMessage = null;
-    axios.post('/songList', {
-        songInfo:{artist_name, album, song_name, track}
-      })
-      .then((res) => {
+
+    this.props.addSong({artist_name, album, song_name, track})
+      .then(()=>{
         this.setState({
           artist: "",
           album:"",
           song:"",
           track:""
-        })        
-        this.props.updateSongList(res.data);
+        })
       })
-      .catch((err) => {
-        console.log("auth error: ", err);
-    });
+      .catch((err)=>{
+        this.setState({
+          artist: "",
+          album:"",
+          song:"",
+          track:"",
+          errorMessage:err
+        })
+      });
+  }
+
+  showError(){
+    if(this.state.errorMessage){
+      return (
+        <div className="alert alert-danger" role="alert">
+          <strong>Error: </strong> {this.state.errorMessage}
+        </div>
+      )
+    }
   }
 
   render() {
@@ -57,8 +73,9 @@ export default class SongForm extends React.Component {
       <div>
         <form>
           <div className="form-group">
-            Add A Song
+            <h4>Add A Song</h4>
           </div>
+          {this.showError()}
           <div className="form-group">
             <input 
               type="text" 

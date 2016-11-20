@@ -34,7 +34,7 @@ export default class SongList extends React.Component {
       const album = a.album.localeCompare(b.album);
       if(album!==0) return album*-1;
       return a.song_name.localeCompare(b.song_name);
-    }).map(s => <Song updateSongList={this.props.updateSongList} songInfo={s} />)
+    }).map(s => <Song deleteSong={this.props.deleteSong} songInfo={s} />)
   }
 
   render() {

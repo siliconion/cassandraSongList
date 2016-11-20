@@ -8,16 +8,8 @@ export default class Song extends React.Component {
   }
 
   deleteSong() {
-    console.log("delete song")
-    axios.post('/deleteSong', {
-        songInfo:this.props.songInfo
-      })
-      .then((res) => {
-        this.props.updateSongList(res.data);
-      })
-      .catch((err) => {
-        console.log("auth error: ", err);
-    });
+    console.log("delete song");
+    this.props.deleteSong(this.props.songInfo);
   }
 
   render() {
