@@ -14,7 +14,7 @@ module.exports = (function(){
     console.log("connection ", err);
   });
 
-  var db = {};
+  let db = {};
   db.findUser = (username, callback) => {
     const query = 'SELECT * FROM auth_table WHERE username = ?';
     client.execute(query, [username], { prepare: true }, callback);

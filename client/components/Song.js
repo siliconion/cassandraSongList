@@ -12,7 +12,6 @@ export default class Song extends React.Component {
   }
 
   render() {
-    console.log(this.props)
     return (
       <tr className="">
         <td className="">{this.props.songInfo.artist_name}</td>
