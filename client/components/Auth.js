@@ -29,14 +29,18 @@ export default class Auth extends React.Component {
   render() {
     return (
       <div className='auth container'>
-        {this.state.showLogin?(
-          <Login 
-            handleLogin={this.props.handleLogin}
-            showSignup={this.showSignup} />
-        ):(
-          <Signup 
-            showLogin={this.showLogin} />
-        )}
+        <div className="row vertical-offset-100">
+    	    <div className="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 ">
+            {this.state.showLogin?(
+              <Login 
+                handleLogin={this.props.handleLogin}
+                showSignup={this.showSignup} />
+            ):(
+              <Signup 
+                showLogin={this.showLogin} />
+            )}
+          </div>
+        </div>
       </div>
     );
   }

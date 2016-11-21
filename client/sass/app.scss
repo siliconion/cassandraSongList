@@ -1,11 +1,6 @@
 $font-stack:    Helvetica, sans-serif;
 $primary-color: #333;
 
-body {
-  font: 100% $font-stack;
-  color: $primary-color;
-}
-
-.authform {
-  width: 50%;
+.alert-danger{
+  font-size: 1em;
 }
