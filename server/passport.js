@@ -2,9 +2,9 @@ const LocalStrategy   = require('passport-local').Strategy;
 const db = require('./db');
 const bcrypt   = require('bcrypt-nodejs');
 
-var passport = require('passport');
+let passport = require('passport');
 
-var authenticate = function(username, password, done) {
+let authenticate = function(username, password, done) {
   db.findUser(username, (err, data) => {
     if(err) {return done(err)}
     if(!data || data.rowLength === 0){
@@ -17,12 +17,12 @@ var authenticate = function(username, password, done) {
   });
 }
 
-var signup = function(username, password, done){
+let signup = function(username, password, done){
   db.findUser(username, (err, data) => {
     if(data && data.rowLength > 0){
       return done(null, false, "This username is already taken");
     } else {
-      var hashPassword =  bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+      let hashPassword =  bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
       db.addUser(username, hashPassword, (err)=> {
         if(err){
           return done(err, false)
