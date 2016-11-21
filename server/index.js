@@ -24,8 +24,7 @@ app.use(bodyParser.json());
 app.use(session({secret: 'kitty kity', cookie: {}}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(express.static(path.join(__dirname, '../client')));
-app.use(express.static(path.join(__dirname, '../assets')));
+app.use(express.static(path.join(__dirname, '../client/public')));
 
 /*
   *******************
@@ -41,7 +40,7 @@ app.use(express.static(path.join(__dirname, '../assets')));
 
 app.get('/app-bundle.js',
   browserify(path.join(__dirname, '../client/app.js'), {
-    transform: [[babelify, { presets: ['es2015', 'react'] }]],
+    transform: [[babelify, { presets: ['es2015', 'react'] }], 'scssify'],
   })
 );
 

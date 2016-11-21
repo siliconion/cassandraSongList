@@ -51,8 +51,8 @@ export default class Login extends React.Component {
 
   render() {
     return (
-      <div className='auth container'>
-        <form>
+      <div className='login container'>
+        <form className="authform">
           <div className="form-group">
             <h4>Welcome back! Please log in.</h4>
           </div>

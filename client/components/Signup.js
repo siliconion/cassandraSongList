@@ -49,8 +49,8 @@ export default class Signup extends React.Component {
 
   render() {
     return (
-      <div className='auth container'>
-        <form>
+      <div className='Signup container'>
+        <form className="authform">
           <div className="form-group">
             <h4>Welcome! Please sign up.</h4>
           </div>
