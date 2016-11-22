@@ -20,7 +20,6 @@ const serverUrl = process.env.PORT || 4000;
 app.use(morgan('dev'));   // show requests in console
 app.use(cookieParser());
 app.use(bodyParser.json());
-// initialize passport
 app.use(session({secret: 'kitty kity', cookie: {}}));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -32,48 +31,27 @@ app.use(express.static(path.join(__dirname, '../client/public')));
   *******************
 */
 
-/*
-  *******************************************
-  Browserify and Babelify all files for React
-  *******************************************
-*/
-
+// Browserify and Babelify all files for React
 app.get('/app-bundle.js',
   browserify(path.join(__dirname, '../client/app.js'), {
     transform: [[babelify, { presets: ['es2015', 'react'] }], 'scssify'],
   })
 );
 
-/*
-  ***********************************************************************
-  Initializes interface.
-
-  Response object:  Index.html file
-  ***********************************************************************
-*/
-
+// Index
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/public/index.html'));
 });
 
-/*
-  ***********************************************************************
-  Auth through passport
-
-  Response object:  user onject if success, 500 with error string if fail
-  ***********************************************************************
-*/
-
+// Auth routes
 app.post('/login', function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
         if (err) {
             return next(err); // Error 500
         }
         if (!user) {
-            //Authentication failed
             return res.status(401).send(info); 
         }
-        //Authentication successful
         req.logIn(user, function(err) {
           if (err) { return next(err); }
           return res.status(200).send(user);
@@ -92,10 +70,8 @@ app.post('/signup', function(req, res, next) {
             return next(err); // Error 500
         }
         if (!user) {
-            //Authentication failed
             return res.status(401).send(info); 
         }
-        //Authentication successful
         req.logIn(user, function(err) {
           if (err) { return next(err); }
           return res.status(200).send(user);
@@ -103,6 +79,11 @@ app.post('/signup', function(req, res, next) {
     })(req, res, next);
 }); 
 
+app.get('/isAuth', isLoggedIn, function(req, res){
+  res.send(req.user.username);
+});
+
+// Song list routes
 app.get('/songlist', isLoggedIn, function(req, res){
   db.getSongList(req.user.username, (err, data) => {
     res.send(data.rows);
@@ -142,7 +123,7 @@ function isLoggedIn(req, res, next) {
 
 /*
   *******************************************************************
-  Spin up server on either NODE environmental variable or 8000(local)
+  Spin up server
   *******************************************************************
 */
 

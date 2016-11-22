@@ -4,26 +4,27 @@ const bcrypt   = require('bcrypt-nodejs');
 
 let passport = require('passport');
 
-let authenticate = function(username, password, done) {
+const authenticate = function(username, password, done) {
   db.findUser(username, (err, data) => {
     if(err) {return done(err)}
     if(!data || data.rowLength === 0){
-      return done(null, false, "Unrecognized username")
+      return done(null, false, {message:"Unrecognized username"})
     }
     if (!bcrypt.compareSync(password, data.rows[0].hashed_pass)) {
-      return done(null, false, "Incorrect password, please try again");
+      return done(null, false, {message: "Incorrect password, please try again"});
     }
+    console.log("db auth", data);
     return done(null, data.rows[0]);
   });
 }
 
-let signup = function(username, password, done){
+const signup = function(username, password, done){
   db.findUser(username, (err, data) => {
     if(data && data.rowLength > 0){
-      return done(null, false, "This username is already taken");
+      return done(null, false, {message:"This username is already taken"});
     } else {
-      let hashPassword =  bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-      db.addUser(username, hashPassword, (err)=> {
+      const hashPassword =  bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+      db.addUser(username, hashPassword, (err, data)=> {
         if(err){
           return done(err, false)
         }
@@ -34,7 +35,6 @@ let signup = function(username, password, done){
 }
 
 passport.use(new LocalStrategy(authenticate));
-
 passport.use('local-signup', new LocalStrategy(signup));
 
 passport.serializeUser(function (user, done) {

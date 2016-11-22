@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 export default class SongForm extends React.Component {
   constructor(props) {
@@ -30,7 +29,6 @@ export default class SongForm extends React.Component {
   handleTrackChange(event) {
     this.setState({track: event.target.value});
   }
-
   addSong(){
     let artist_name = this.state.artist;
     let album = this.state.album;

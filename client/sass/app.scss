@@ -1,6 +1,21 @@
 $font-stack:    Helvetica, sans-serif;
 $primary-color: #333;
+$nav-color: rgba(0,1,100,0.1);
 
 .alert-danger{
   font-size: 1em;
+}
+
+.navbar {
+  background: $nav-color;
+  border-radius: 0;
+  margin-bottom: 0;
+  border-color: $nav-color;
+}
+.navbar-brand img {
+  fill: $nav-color;
+  display: inline-block;
+  width: 35px;
+  position: absolute;
+  left: 15px;
 }

@@ -34,19 +34,17 @@ export default class Login extends React.Component {
       })
       .catch((err) => {
         if(err.response){
-          this.setState({errorMessage: err.response.data});
+          this.setState({errorMessage: err.response.data.message});
         }
     });
   }
 
   showError(){
-    if(this.state.errorMessage){
-      return (
+    return (this.state.errorMessage)?(
         <div className="alert alert-danger" role="alert">
           <strong>Error: </strong> {this.state.errorMessage}
         </div>
-      )
-    }
+      ):null
   }
 
   render() {
@@ -78,7 +76,7 @@ export default class Login extends React.Component {
               onClick={this.handleLogin} >Log in</button>
           </div>
           <div className="form-group">
-            <h4>New here? Please <a onClick={this.props.showSignup}>Sign up</a></h4>
+            <h4>New here? Please <a onClick={this.props.showSignup}>Sign up</a>.</h4>
           </div>
         </form>
       </div>

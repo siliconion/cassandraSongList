@@ -15,7 +15,6 @@ export default class Auth extends React.Component {
   }
 
   showLogin(event) {
-    console.log("show login")
     this.setState({showLogin: true});
   }
 
@@ -30,7 +29,7 @@ export default class Auth extends React.Component {
     return (
       <div className='auth container'>
         <div className="row vertical-offset-100">
-    	    <div className="col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 ">
+    	    <div className="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 ">
             {this.state.showLogin?(
               <Login 
                 handleLogin={this.props.handleLogin}

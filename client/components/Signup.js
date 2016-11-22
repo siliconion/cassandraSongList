@@ -32,8 +32,10 @@ export default class Signup extends React.Component {
       .then((res) => {
         this.props.showLogin();
       })
-      .catch((err) => {
-        this.setState({errorMessage: err.response.data});
+      .catch((err) => {        
+        if(err.response){
+          this.setState({errorMessage: err.response.data.message});
+        }
     });
   }
 
@@ -76,7 +78,7 @@ export default class Signup extends React.Component {
               onClick={this.handleSignup} >Sign up</button>
           </div>
           <div className="form-group">
-            <h4>Already have an account? Please <a onClick={this.props.showLogin}>log in</a></h4>
+            <h4>Already have an account? Please <a onClick={this.props.showLogin}>log in</a>.</h4>
           </div>
         </form>
       </div>
