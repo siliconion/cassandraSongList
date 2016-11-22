@@ -68,7 +68,7 @@ export default class SongForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="songForm">
         <form>
           <div className="form-group">
             <h4>Add A Song</h4>

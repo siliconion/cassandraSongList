@@ -52,7 +52,7 @@ export default class Auth extends React.Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container main">
         <div className="row">
           <div className="col-xs-12 col-sm-9">
             <SongList 

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A fun project to get familiar with Cassandra.",
   "main": "server/index.js",
-    "engines": {
+  "engines": {
     "node": "7.0.0"
   },
   "babel": {
@@ -36,6 +36,7 @@
     "dotenv": "^2.0.0",
     "express": "^4.12.4",
     "express-session": "^1.14.1",
+    "jsdom": "^9.8.3",
     "morgan": "^1.7.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",

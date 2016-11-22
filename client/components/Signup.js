@@ -51,7 +51,7 @@ export default class Signup extends React.Component {
 
   render() {
     return (
-      <div className='Signup'>
+      <div className='signup'>
         <form className="authform">
           <div className="form-group">
             <h4>Welcome! Please sign up.</h4>

@@ -1,16 +1,22 @@
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
-import MyComponent from '../../../client/components/App.js';
+import { mount } from 'enzyme';
+import App from '../../../client/components/App.js';
 
 describe('<App />', () => {
   let wrapper;
   beforeEach('Setup MyComponent wrapper', () => {
     wrapper = shallow(
-      <App title="Hello World!" />
+      <App />
     );
   });
-  it('should render the title', () => {
-    expect(wrapper.find('h2').text()).to.equal('Hello World!');
+  it('should render a nav bar', () => {
+    expect(wrapper.find('Nav').length).to.equal(1);
   });
+  it('should render a main component', () =>{
+    expect(wrapper.find('.main').length).to.equal(1);
+  })
+  it('should render an auth component', () =>{
+    expect(wrapper.find('.auth').length).to.equal(1);
+  })
 });

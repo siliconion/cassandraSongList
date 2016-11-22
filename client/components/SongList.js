@@ -37,7 +37,7 @@ export default class SongList extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="songList">
         <table className="table table-bordered table-striped">
           <thead>
             <tr>
