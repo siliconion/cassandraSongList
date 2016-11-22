@@ -20,7 +20,7 @@ const serverUrl = process.env.PORT || 4000;
 app.use(morgan('dev'));   // show requests in console
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(session({secret: 'kitty kity', cookie: {}}));
+app.use(session({secret: 'session secrete', cookie: {}}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(path.join(__dirname, '../client/public')));
@@ -37,11 +37,6 @@ app.get('/app-bundle.js',
     transform: [[babelify, { presets: ['es2015', 'react'] }], 'scssify'],
   })
 );
-
-// Index
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/public/index.html'));
-});
 
 // Auth routes
 app.post('/login', function(req, res, next) {
@@ -112,6 +107,11 @@ app.post('/deleteSong', isLoggedIn, function(req, res){
       })
     }
   })
+});
+
+// Index and catch-all
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/public/index.html'));
 });
 
 function isLoggedIn(req, res, next) {
