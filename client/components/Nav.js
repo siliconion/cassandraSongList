@@ -3,31 +3,32 @@ import React from 'react';
 export default class Nav extends React.Component {
   constructor(props) {
     super(props);
-    this.deleteSong= this.deleteSong.bind(this);
-  }
-
-  deleteSong() {
-    this.props.deleteSong(this.props.songInfo);
   }
 
   render() {
     return (
       <nav className="navbar navbar-default">
         <div className="container">
-          <div className="navbar-header">
+          <div className="navbar-header ">
             <div className="navbar-brand">
-              <img src="/img/favicon.svg" alt="C*" />
+              <img className="navbar-img" src="/img/favicon.svg" alt="C*" />
+              Cassandra Song List
             </div>
-            <div className="nav navbar-nav">
-              <h3>Cassandra Song List</h3>
-            </div>
-          <div>
-            {this.props.username? (
-              "Welcome, " + this.props.username + "!"
+          </div>
+          {
+            this.props.username? (
+              <ul  className="nav navbar-nav navbar-right">
+                <li className="navbar-text">{"Welcome, " + this.props.username + "!" }</li>
+                <li className="">
+                  <button 
+                    className="btn btn-default" 
+                    onClick={this.props.handleLogout}> 
+                    Logout 
+                  </button>
+                </li>
+              </ul> 
             ):null
           }
-          </div> 
-          </div>
         </div>
       </nav>
     );

@@ -1,13 +1,13 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import MyComponent from '../../../client/components/MyComponent.jsx';
+import MyComponent from '../../../client/components/App.js';
 
-describe('<MyComponent />', () => {
+describe('<App />', () => {
   let wrapper;
   beforeEach('Setup MyComponent wrapper', () => {
     wrapper = shallow(
-      <MyComponent title="Hello World!" />
+      <App title="Hello World!" />
     );
   });
   it('should render the title', () => {

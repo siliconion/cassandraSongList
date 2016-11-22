@@ -11,6 +11,7 @@ export default class App extends React.Component {
       username: null,
     };
     this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
   }
 
   componentDidMount() {
@@ -25,19 +26,27 @@ export default class App extends React.Component {
   }
 
   handleLogin(username){
-    localStorage.setItem("username", username);
     this.setState({
       username
     })
   }
   handleLogout(){
-    localStorage.removeItem("username");
+    axios.get('/logout')
+      .then((res)=>{
+        this.setState({
+          username: null
+        })
+      })
+      .catche((err)=>{
+        console.log("songlist error: ", err);
+      })
   }
   render() {
     return (
       <div className="app">
         <Nav
-          username={this.state.username} />
+          username={this.state.username} 
+          handleLogout={this.handleLogout}/>
         <br/>
         {this.state.username?
           (

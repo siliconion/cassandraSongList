@@ -1,9 +1,9 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-import SampleTagList from '../../../client/components/SampleTagList.jsx';
+import Main from '../../../client/components/Main.js';
 
-describe("<SampleTagList />", function () {
+describe("<Main />", function () {
   let wrapper;
   const tags = ['a', 'b', 'c'];
   beforeEach('Setup MyComponent wrapper', () => {
