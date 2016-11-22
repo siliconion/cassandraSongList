@@ -1,6 +1,7 @@
 $font-stack:    Helvetica, sans-serif;
 $primary-color: #333;
-$nav-color: rgba(0,0,100,0.1);
+$nav-color: rgba(0 , 0, 0, 0.5);
+$nav-text-color: #111;
 
 .alert-danger{
   font-size: 1em;
@@ -17,15 +18,20 @@ $nav-color: rgba(0,0,100,0.1);
     border-radius: 0;
     border: none;
     background: none;
-    color: #9a9a9a;
+    color: #000000;
     &:not(.navbar-toggle) {
-      padding: 16px 12px;
+      padding: 14px 12px;
     }
   }
-
+  .navbar-text{
+    color:#111;
+  }
+  .navbar-brand{
+    color:$nav-text-color;
+  }
   .btn-nav[aria-expanded='true'],
   .btn-nav:hover {
-    color: #333;
+    color: $nav-text-color;
     background-color: #e6e6e6;
     border-color: #adadad;
   }

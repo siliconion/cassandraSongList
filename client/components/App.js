@@ -37,7 +37,7 @@ export default class App extends React.Component {
           username: null
         })
       })
-      .catche((err)=>{
+      .catch((err)=>{
         console.log("songlist error: ", err);
       })
   }
